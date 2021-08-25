@@ -2,6 +2,8 @@ package com.example.testingexample
 
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.Espresso.pressBack
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
@@ -45,5 +47,26 @@ class MainActivityTest {
         val activityScenario = ActivityScenario.launch(MainActivity::class.java)
         onView(withId(R.id.textview)).check(matches(withText(R.string.main_textview)))
 
+    }
+
+    // Activity Navigation Testing
+    @Test
+    fun test_navSecondaryActivity(){
+        val activityScenario = ActivityScenario.launch(MainActivity2::class.java)
+
+        //This triggers the click
+        onView(withId(R.id.button)).perform(click())
+
+        onView(withId(R.id.secondary_root)).check(matches(isDisplayed()))
+    }
+
+    // This test for navigating back to the main
+    @Test
+    fun test_backPressedToMain(){
+        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
+        onView(withId(R.id.button)).perform(click())
+        onView(withId(R.id.secondary_root)).check(matches(isDisplayed()))
+        pressBack()
+        onView(withId(R.id.main_root)).check(matches(isDisplayed()))
     }
 }
