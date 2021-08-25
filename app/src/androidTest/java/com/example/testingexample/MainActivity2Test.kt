@@ -1,5 +1,6 @@
 package com.example.testingexample
 
+import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -22,6 +23,9 @@ class MainActivity2Test{
     fun test_isActivityInView() {
         onView(withId(R.id.secondary_root))
             .check(matches(isDisplayed()))
+
+        // This doesnt effect the next test
+        activityRule.scenario.moveToState(Lifecycle.State.DESTROYED)
     }
 
     @Test

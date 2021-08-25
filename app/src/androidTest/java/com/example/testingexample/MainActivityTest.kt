@@ -52,7 +52,7 @@ class MainActivityTest {
     // Activity Navigation Testing
     @Test
     fun test_navSecondaryActivity(){
-        val activityScenario = ActivityScenario.launch(MainActivity2::class.java)
+        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
 
         //This triggers the click
         onView(withId(R.id.button)).perform(click())
