@@ -28,45 +28,4 @@ class MainActivityTest {
         val activityScenario = ActivityScenario.launch(MainActivity::class.java)
         onView(withId(R.id.main_root)).check(matches(isDisplayed()))
     }
-
-    @Test
-    fun test_componentVisibility() {
-        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
-        onView(withId(R.id.button)).check(
-            matches(withEffectiveVisibility(Visibility.VISIBLE)
-            )
-        )
-        onView(withId(R.id.textview)).check(
-            matches(withEffectiveVisibility(Visibility.VISIBLE)
-            )
-        )
-    }
-
-    @Test
-    fun test_isTextDisplayed(){
-        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
-        onView(withId(R.id.textview)).check(matches(withText(R.string.main_textview)))
-
-    }
-
-    // Activity Navigation Testing
-    @Test
-    fun test_navSecondaryActivity(){
-        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
-
-        //This triggers the click
-        onView(withId(R.id.button)).perform(click())
-
-        onView(withId(R.id.secondary_root)).check(matches(isDisplayed()))
-    }
-
-    // This test for navigating back to the main
-    @Test
-    fun test_backPressedToMain(){
-        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
-        onView(withId(R.id.button)).perform(click())
-        onView(withId(R.id.secondary_root)).check(matches(isDisplayed()))
-        pressBack()
-        onView(withId(R.id.main_root)).check(matches(isDisplayed()))
-    }
 }
