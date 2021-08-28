@@ -6,4 +6,6 @@
     <string name="text_title">title</string>
     <string name="image">image</string>
     <string name="author">author</string>
+    <string name="open_gallery">open gallery</string>
+    <string name="pick_image">Pick Image</string>
 </resources>
