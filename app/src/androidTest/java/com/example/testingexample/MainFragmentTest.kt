@@ -11,6 +11,9 @@ import com.example.testingexample.factory.AppFragmentFactory
 import com.example.testingexample.model.Books.GOOD_OMENS
 import com.example.testingexample.model.Books.SHERLOCK_HOLMES
 import com.example.testingexample.model.Data
+import com.example.testingexample.source.RemoteDataSource
+import io.mockk.every
+import io.mockk.mockk
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -19,13 +22,18 @@ class MainFragmentTest {
 
     @Test
     fun test_isListVisible() {
-        val fragmentFactory = AppFragmentFactory()
 
         val book = SHERLOCK_HOLMES
-        val bundle = Bundle()
-        bundle.putInt("bookId", book.id!!)
 
-        // FragmentScenario
+        val dataSource = mockk<RemoteDataSource>()
+        every {
+            dataSource.getBook(book.id)
+        } returns book
+
+        val bundle = Bundle()
+        bundle.putInt("bookId", book.id)
+
+        val fragmentFactory = AppFragmentFactory(dataSource)
         val scenario = launchFragmentInContainer<MainFragment>(
             fragmentArgs = bundle,
             factory = fragmentFactory

@@ -13,15 +13,19 @@ import java.util.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
+    lateinit var dataSource: RemoteDataSource
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        supportFragmentManager.fragmentFactory = AppFragmentFactory()
+
+        dataSource = RemoteDataSource()
+        supportFragmentManager.fragmentFactory = AppFragmentFactory(dataSource)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         if(supportFragmentManager.fragments.size == 0){
-            val data = 1
+            val data = 0
             val bundle = Bundle()
-            bundle.putInt("bookID", data)
+            bundle.putInt("bookId", data)
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, MainFragment::class.java, bundle)
                 .commit()

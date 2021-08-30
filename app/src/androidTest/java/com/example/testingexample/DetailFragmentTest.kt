@@ -18,7 +18,7 @@ class DetailFragmentTest {
     @Test
     fun test_isTextDisplayed(){
 
-        val fragmentFactory = AppFragmentFactory()
+        val fragmentFactory = AppFragmentFactory(null)
         val author = arrayListOf("Neil Gaiman, Terry Pratchett")
         val bundle = Bundle()
         bundle.putStringArrayList("author", author)

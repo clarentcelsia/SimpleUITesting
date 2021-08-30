@@ -1,20 +1,17 @@
 package com.example.testingexample
 
 import android.os.Bundle
-import android.text.TextUtils.replace
 import android.view.View
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.testingexample.adapter.BookAdapter
 import com.example.testingexample.model.Data
 import com.example.testingexample.source.RemoteDataSource
 
-class MainFragment : Fragment(R.layout.fragment_main) {
+class MainFragment constructor(
+    private val remoteDataSource: RemoteDataSource
+) : Fragment(R.layout.fragment_main) {
 
     private lateinit var data: Data
 
@@ -33,8 +30,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let { args ->
-            args.getInt("bookID").let { id ->
-                RemoteDataSource.getBook(id).let {
+            args.getInt("bookId").let { id ->
+                remoteDataSource.getBook(id)?.let {
                     data = it
                 }
             }

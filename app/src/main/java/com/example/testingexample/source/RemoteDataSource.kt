@@ -4,9 +4,9 @@ import com.example.testingexample.model.Books.GOOD_OMENS
 import com.example.testingexample.model.Books.SHERLOCK_HOLMES
 import com.example.testingexample.model.Data
 
-object RemoteDataSource : DataSource {
+class RemoteDataSource : DataSource {
 
-    private val remote = LinkedHashMap<Int, Data>(2)
+    private var remote = LinkedHashMap<Int, Data>(2)
 
     init {
         addBook(SHERLOCK_HOLMES)
@@ -14,14 +14,14 @@ object RemoteDataSource : DataSource {
     }
 
     fun addBook(data: Data){
-        remote[data.id!!] = data
+        remote[data.id] = data
     }
 
-    override fun getBook(dataID: Int): Data {
-        return remote[dataID]!!
+    override fun getBook(dataID: Int): Data? {
+        return remote[dataID]
     }
 }
 
 interface DataSource {
-    fun getBook(dataID: Int ): Data
+    fun getBook(dataID: Int ): Data?
 }
