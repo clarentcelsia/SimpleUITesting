@@ -23,11 +23,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         if(supportFragmentManager.fragments.size == 0){
-            val data = 0
-            val bundle = Bundle()
-            bundle.putInt("bookId", data)
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment::class.java, bundle)
+                .replace(R.id.container, ListFragment::class.java, null)
                 .commit()
         }
 

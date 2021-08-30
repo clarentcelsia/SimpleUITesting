@@ -19,4 +19,9 @@ object Books {
         arrayListOf("Neil Gaiman, Terry Pratchett"),
         "the funniest book ever written about Armageddon. Desperate to save humanity and the world they love, a snarky demon and a fastidious angel decide to join forces and stop the upcoming Rapture—in between their witty quips about pop culture."
     )
+
+    val books = arrayOf(
+        SHERLOCK_HOLMES,
+        GOOD_OMENS
+    )
 }

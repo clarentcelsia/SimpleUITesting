@@ -5,5 +5,7 @@
     <string name="test_description">description</string>
     <string name="text_title">title</string>
     <string name="image">image</string>
-    <string name="author">author</string>
+    <string name="author">see author</string>
+    <string name="list_author">list_author</string>
+    <string name="detail_title">detail_title</string>
 </resources>

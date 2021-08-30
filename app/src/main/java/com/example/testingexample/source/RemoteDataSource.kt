@@ -1,20 +1,27 @@
 package com.example.testingexample.source
 
-import com.example.testingexample.model.Books.GOOD_OMENS
-import com.example.testingexample.model.Books.SHERLOCK_HOLMES
+import android.util.Log
+import com.example.testingexample.model.Books
 import com.example.testingexample.model.Data
 
 class RemoteDataSource : DataSource {
 
-    private var remote = LinkedHashMap<Int, Data>(2)
+    private var remote = HashMap<Int, Data>(Books.books.size)
 
     init {
-        addBook(SHERLOCK_HOLMES)
-        addBook(GOOD_OMENS)
+        for(book in Books.books){
+            addBook(book)
+            Log.i("TAG", "list: ${book.title}")
+        }
     }
 
-    fun addBook(data: Data){
+    private fun addBook(data: Data){
         remote[data.id] = data
+    }
+
+    override fun getBooks(): List<Data>{
+        Log.i("TAG", "getBooks: ${remote.values.toString()}")
+        return ArrayList(remote.values)
     }
 
     override fun getBook(dataID: Int): Data? {
@@ -22,6 +29,3 @@ class RemoteDataSource : DataSource {
     }
 }
 
-interface DataSource {
-    fun getBook(dataID: Int ): Data?
-}

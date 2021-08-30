@@ -10,7 +10,6 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.example.testingexample.factory.AppFragmentFactory
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.lang.StringBuilder
 
 @RunWith(AndroidJUnit4ClassRunner::class)
 class DetailFragmentTest {
