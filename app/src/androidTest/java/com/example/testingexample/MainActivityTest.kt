@@ -5,27 +5,36 @@ import android.app.Instrumentation
 import android.content.ContentResolver
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
+import android.provider.MediaStore.ACTION_IMAGE_CAPTURE
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
+import androidx.core.os.bundleOf
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.typeText
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.Intents.intending
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
-import androidx.test.espresso.intent.matcher.IntentMatchers.hasType
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry
-import org.hamcrest.Matcher
-import org.hamcrest.Matchers.allOf
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import com.example.testingexample.ImageHasDrawableMatcher.hasDrawable
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.CoreMatchers.not
+import org.junit.*
 import org.junit.runner.RunWith
+import java.io.File
 
 /**
  *  This will test android functionality
@@ -35,69 +44,27 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4ClassRunner::class)
 class MainActivityTest {
 
-    // Initialize espresso-intents rule
-    val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
-
     @get: Rule
-    val activityRule = ActivityScenarioRule<MainActivity>(intent)
-
-    @Before
-    fun init(){
-        Intents.init()
-    }
+    val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
     @Test
-    fun test_validateIntent() {
+    fun test_showDialog() {
+        val name = "Anonymous"
 
-        val expectedIntent: Matcher<Intent> = allOf(
-            //Pass all the things that did in Intent to MainActivity
-            hasAction(Intent.ACTION_GET_CONTENT),
-            hasType("image/*")
-        )
+        onView(withId(R.id.launch)).perform(click())
 
-        val activityForResult = createGalleryStub()
+        onView(withId(R.id.etName)).check(matches(isDisplayed()))
 
-        //Testing intent
-        intending(expectedIntent).respondWith(activityForResult)
+        //Check if text has already been entered (not null)
+        onView(withId(R.id.etName)).perform(typeText(name))
 
-        //Verify the action used to launch the activity
-        //produces the stub result.
-        onView(withId(R.id.open_gallery)).perform(click())
-        intended(expectedIntent)
+        onView(withText(R.string.submit)).perform(click())
+
+        //to check if a view is not displayed
+        //(for a view that is not in the hierarchy)
+        onView(withId(R.id.dialog)).check(doesNotExist())
+
+        onView(withId(R.id.container)).check(matches(withText(name)))
+
     }
-
-    @After
-    fun release(){
-        Intents.release()
-    }
-
-    /**
-     *  Stubbing helps to deal with activityForResult
-     *  to make sure the intent provide the data callback response
-     *  after doing the intent.
-     *
-     *  This is useful to check whether the intent response works as expected
-     *  or not since it can't be done under test to manipulate the ui
-     *  of external activity or control the ActivityResult returned to Activity.
-     */
-
-    private fun createGalleryStub(): Instrumentation.ActivityResult {
-        // Test pick image from drawable
-        val resource: Resources = InstrumentationRegistry.getInstrumentation()
-            .context.resources
-
-        // Get the uri of an image stored in drawable
-        val imageUri = Uri.parse(
-            ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
-                    resource.getResourcePackageName(R.drawable.ic_launcher_background) + "/" +
-                    resource.getResourceTypeName(R.drawable.ic_launcher_background) + "/" +
-                    resource.getResourceEntryName(R.drawable.ic_launcher_background)
-        )
-
-        val resultData = Intent()
-        resultData.data = imageUri
-
-        return Instrumentation.ActivityResult(Activity.RESULT_OK, resultData)
-    }
-
 }
