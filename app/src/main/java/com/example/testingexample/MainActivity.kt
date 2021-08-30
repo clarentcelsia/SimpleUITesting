@@ -1,18 +1,16 @@
 package com.example.testingexample
 
-import android.app.Activity
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View.VISIBLE
+import android.view.LayoutInflater
 import android.widget.Button
-import android.widget.ImageView
-import androidx.activity.result.contract.ActivityResultContracts
-import com.bumptech.glide.Glide
+import android.widget.TextView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputEditText
 
-class MainActivity : AppCompatActivity() {
+class MainActivity: AppCompatActivity() {
 
-    private lateinit var container: ImageView
+    private lateinit var container: TextView
     private lateinit var btn_open: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,27 +18,26 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         container = findViewById(R.id.container)
-        btn_open = findViewById(R.id.open_gallery)
+        btn_open = findViewById(R.id.launch)
 
         btn_open.setOnClickListener {
-            open_gallery()
+            launch_dialog()
         }
+
     }
 
-    private fun open_gallery(){
-        val intent = Intent()
-            .setType("image/*")
-            .setAction(Intent.ACTION_GET_CONTENT)
-
-        resultLauncher.launch(intent)
-    }
-
-    private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-        if (it.resultCode == Activity.RESULT_OK){
-            val data = it.data?.data
-            container.visibility = VISIBLE
-            Glide.with(this).load(data).into(container)
-        }
+    private fun launch_dialog() {
+        val view = LayoutInflater.from(this).inflate(R.layout.dialogview, null)
+        val etName = view.findViewById<TextInputEditText>(R.id.etName)
+        MaterialAlertDialogBuilder(this)
+            .setView(view)
+            .setPositiveButton(getString(R.string.submit)){ _, _ ->
+                val name = etName.text.toString()
+                container.text = name
+            }
+            .setNegativeButton(getString(R.string.cancel), null)
+            .setCancelable(false)
+            .show()
     }
 }
 
