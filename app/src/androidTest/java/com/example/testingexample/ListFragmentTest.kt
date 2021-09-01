@@ -1,7 +1,6 @@
 package com.example.testingexample
 
 import androidx.test.espresso.Espresso.*
-import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
@@ -9,10 +8,8 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.example.testingexample.adapter.ListAdapter
-import com.example.testingexample.model.Books
 import com.example.testingexample.ui.MainActivity
-import com.example.testingexample.util.EspressoIdlingResource
-import org.junit.Before
+import com.example.testingexample.util.EspressoIdlingResourceRule2
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -28,13 +25,12 @@ class ListFragmentTest{
     @get: Rule
     val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
+    //option 2
+    @get: Rule
+    val espressoIdlingResRule = EspressoIdlingResourceRule2()
+
     // data test samples
     private val LIST_INDEX = 1
-
-    @Before
-    fun registerIdlingResource(){
-        IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingRes)
-    }
 
     @Test
     fun test_isRecyclerDisplayed(){
@@ -53,11 +49,5 @@ class ListFragmentTest{
 
         onView(withId(R.id.list)).check(matches(isDisplayed()))
     }
-
-    @Before
-    fun unRegisterIdlingResource(){
-        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingRes)
-    }
-
 
 }
