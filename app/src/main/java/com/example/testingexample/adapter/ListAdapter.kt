@@ -10,8 +10,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testingexample.R
 import com.example.testingexample.model.Data
+import com.example.testingexample.util.EspressoIdlingResource
 
-class ListAdapter: RecyclerView.Adapter<ListAdapter.ListViewHolder>() {
+class  ListAdapter: RecyclerView.Adapter<ListAdapter.ListViewHolder>() {
 
     inner class ListViewHolder(val view: View) : RecyclerView.ViewHolder(view)
 
@@ -50,6 +51,14 @@ class ListAdapter: RecyclerView.Adapter<ListAdapter.ListViewHolder>() {
     }
 
     override fun getItemCount(): Int = listDiffer.currentList.size
+
+    fun submitList(list: List<Data>){
+        EspressoIdlingResource.increment()
+        val dataCommitCallback = Runnable {
+            EspressoIdlingResource.decrement()
+        }
+        listDiffer.submitList(list, dataCommitCallback)
+    }
 
     private var selectedData: ( (Data) -> Unit )? = null
     fun onItemSelected(data: ((Data) -> Unit)) {
